@@ -18,6 +18,8 @@ function movePattern (enemy, type, hunted, counter) {
     if(counter%2 === 0){
       moveNpcHunter(enemy, hunted);
     }
+  } else if (type === "patrol"){
+    moveNPCPatrol(enemy);
   }
 }
 
@@ -112,6 +114,34 @@ function moveNPCVertical(enemy) {
       enemy.yCoordinate -= 1;
     } else {
       enemy.yCoordinate += 1;
+      enemy.direction = "down";
+    }
+  }
+}
+
+function moveNPCPatrol(enemy){
+  if (enemy.direction === "down") {
+    if(notAWall(enemy, "down")) {
+      enemy.yCoordinate +=1;
+    } else{
+      enemy.direction = "left";
+    }
+  } else if (enemy.direction === "left") {
+    if(notAWall(enemy, "left")) {
+      enemy.xCoordinate -=1;
+    } else{
+      enemy.direction = "up";
+    }
+  } else if (enemy.direction === "up") {
+    if(notAWall(enemy, "up")) {
+      enemy.yCoordinate -=1;
+    } else{
+      enemy.direction = "right";
+    }
+  } else if (enemy.direction === "right") {
+    if(notAWall(enemy, "right")) {
+      enemy.xCoordinate +=1;
+    } else{
       enemy.direction = "down";
     }
   }
@@ -223,11 +253,14 @@ $(document).ready(function(){
   var enemy2 = new GameObject("hunter.gif", 4, 4);
   var enemy3 = new GameObject("poop.png", Math.floor(Math.random() * 6), 1);
   var enemy4 = new GameObject("poop.png", 4, 8);
+  var enemy5 = new GameObject("poop.png", 9, 6);
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 9, 9);
   var enemyType1 = "vertical";
   var enemyType2 = "hunter";
-  var enemyType3 = "horizontal"
+  var enemyType3 = "horizontal";
+  var enemyType4 = "patrol";
+  enemy5.direction = "down";
   objectArray.push(toilet);
   objectArray.push(player);
   objectArray.push(enemy1);
@@ -238,6 +271,8 @@ $(document).ready(function(){
   enemies.push(enemy3);
   objectArray.push(enemy4);
   enemies.push(enemy4);
+  objectArray.push(enemy5);
+  enemies.push(enemy5);
 
   enduranceMeter(turnTimer);
 
@@ -254,6 +289,7 @@ $(document).ready(function(){
       movePattern(enemy2, enemyType2, player, turnTimer);
       movePattern(enemy3, enemyType3, toilet, turnTimer);
       movePattern(enemy4, enemyType3, toilet, turnTimer);
+      movePattern(enemy5, enemyType4, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -271,6 +307,7 @@ $(document).ready(function(){
       movePattern(enemy2, enemyType2, player, turnTimer);
       movePattern(enemy3, enemyType3, toilet, turnTimer);
       movePattern(enemy4, enemyType3, toilet, turnTimer);
+      movePattern(enemy5, enemyType4, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -290,6 +327,7 @@ $(document).ready(function(){
       movePattern(enemy2, enemyType2, player, turnTimer);
       movePattern(enemy3, enemyType3, toilet, turnTimer);
       movePattern(enemy4, enemyType3, toilet, turnTimer);
+      movePattern(enemy5, enemyType4, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -307,6 +345,7 @@ $(document).ready(function(){
       movePattern(enemy2, enemyType2, player, turnTimer);
       movePattern(enemy3, enemyType3, toilet, turnTimer);
       movePattern(enemy4, enemyType3, toilet, turnTimer);
+      movePattern(enemy5, enemyType4, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
