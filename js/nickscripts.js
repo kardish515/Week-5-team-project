@@ -216,21 +216,28 @@ function enduranceMeter(counter) {
 }
 
 $(document).ready(function(){
-  var turnTimer = 40;
+  var turnTimer = 45;
   var objectArray = [];
   var enemies= [];
-  var enemy1 = new GameObject("poop.png", (Math.ceil(Math.random() * 4)), (Math.ceil(Math.random() * 8)));
-  var enemy2 = new GameObject("hunter.gif", (Math.ceil(Math.random() * 4)), (Math.ceil(Math.random() * 8)));
+  var enemy1 = new GameObject("poop.png", 1, 2);
+  var enemy2 = new GameObject("hunter.gif", 4, 4);
+  var enemy3 = new GameObject("poop.png", Math.floor(Math.random() * 6), 1);
+  var enemy4 = new GameObject("poop.png", 4, 8);
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 9, 9);
   var enemyType1 = "vertical";
   var enemyType2 = "hunter";
+  var enemyType3 = "horizontal"
   objectArray.push(toilet);
   objectArray.push(player);
   objectArray.push(enemy1);
   enemies.push(enemy1);
   objectArray.push(enemy2);
   enemies.push(enemy2);
+  objectArray.push(enemy3);
+  enemies.push(enemy3);
+  objectArray.push(enemy4);
+  enemies.push(enemy4);
 
   enduranceMeter(turnTimer);
 
@@ -245,6 +252,8 @@ $(document).ready(function(){
     if (firstCheck === "go") {
       movePattern(enemy1, enemyType1, toilet, turnTimer);
       movePattern(enemy2, enemyType2, player, turnTimer);
+      movePattern(enemy3, enemyType3, toilet, turnTimer);
+      movePattern(enemy4, enemyType3, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -260,6 +269,8 @@ $(document).ready(function(){
     if (firstCheck === "go") {
       movePattern(enemy1, enemyType1, toilet, turnTimer);
       movePattern(enemy2, enemyType2, player, turnTimer);
+      movePattern(enemy3, enemyType3, toilet, turnTimer);
+      movePattern(enemy4, enemyType3, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -277,6 +288,8 @@ $(document).ready(function(){
     if (firstCheck === "go") {
       movePattern(enemy1, enemyType1, toilet, turnTimer);
       movePattern(enemy2, enemyType2, player, turnTimer);
+      movePattern(enemy3, enemyType3, toilet, turnTimer);
+      movePattern(enemy4, enemyType3, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
@@ -292,6 +305,8 @@ $(document).ready(function(){
     if (firstCheck === "go") {
       movePattern(enemy1, enemyType1, toilet, turnTimer);
       movePattern(enemy2, enemyType2, player, turnTimer);
+      movePattern(enemy3, enemyType3, toilet, turnTimer);
+      movePattern(enemy4, enemyType3, toilet, turnTimer);
       redraw(objectArray);
     }
     turnTimer = turnCountDown(turnTimer);
