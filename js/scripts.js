@@ -7,10 +7,6 @@ function GameObject (avatar, xCoordinate, yCoordinate, type, target, direction) 
   this.enemyDirection;
 }
 
-function coinFlip() {
-  return Math.floor(Math.random() * 2);
-}
-
 function movePattern (enemy, type, target, counter) {
   if (type === "horizontal") {
     moveNpcHorizontal(enemy);
@@ -203,6 +199,21 @@ function notAWall(object, direction) {
   }
 }
 
+function diaperCheck(player, diaper){
+  if(player.xCoordinate === diaper.xCoordinate && player.yCoordinate === diaper.yCoordinate){
+    return true;
+  } else{
+    return false;
+  }
+}
+
+function diaperIncrease(player, diaper, turnCounter, turnLimit){
+  turnCounter -= 15;
+  meter(turnCounter, turnLimit);
+  return turnCounter;
+}
+
+
 // USER INTERFACE LOGIC
 function triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit) {
   var interrupt = false;
@@ -252,6 +263,7 @@ $(document).ready(function() {
   var enemies = [];
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 9, 9);
+  var diaper = new GameObject("diaper.jpg", 9, 5);
   var enemy1 = new GameObject("poop.png", 1, 2, "vertical");
   var enemy2 = new GameObject("hunter.gif", 4, 4, "hunter", player);
   var enemy3 = new GameObject("poop.png", Math.floor(Math.random() * 6), 1, "horizontal");
@@ -264,6 +276,7 @@ $(document).ready(function() {
   gameObjects.push(enemy3);
   gameObjects.push(enemy4);
   gameObjects.push(enemy5);
+  gameObjects.push(diaper);
   enemies.push(enemy1);
   enemies.push(enemy2);
   enemies.push(enemy3);
@@ -312,6 +325,11 @@ $(document).ready(function() {
   $("#navigation button").click(function() {
     var playerDirection = $(this).attr("id");
     playerMove(playerDirection);
+    if(diaperCheck(player, diaper)){
+      turnCounter = diaperIncrease(player, diaper, turnCounter, turnLimit);
+      gameObjects.pop();
+      positionGameObjects(gameObjects);
+    }
   });
 
   // Arrow Key Navigation
@@ -326,6 +344,11 @@ $(document).ready(function() {
        playerMove("up")
     } else if (e.keyCode === 40) {
        playerMove("down")
+    }
+    if(diaperCheck(player, diaper)){
+      turnCounter = diaperIncrease(player, diaper, turnCounter, turnLimit);
+      gameObjects.pop();
+      positionGameObjects(gameObjects);
     }
   });
 
