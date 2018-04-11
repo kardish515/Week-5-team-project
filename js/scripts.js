@@ -1,32 +1,34 @@
-function GameObject (symbol, xCoordinate, yCoordinate, direction) {
-  this.symbol = symbol;
+function GameObject (avatar, xCoordinate, yCoordinate, type, target, direction) {
+  this.avatar = avatar;
   this.xCoordinate = xCoordinate;
   this.yCoordinate = yCoordinate;
-  this.direction;
+  this.enemyType = type;
+  this.enemyTarget = target;
+  this.enemyDirection;
 }
 
 function coinFlip() {
   return Math.floor(Math.random() * 2);
 }
 
-function movePattern (enemy, type, hunted, counter) {
+function movePattern (enemy, type, target, counter) {
   if (type === "horizontal") {
     moveNPCHorizontal(enemy);
-  }else if (type === "vertical") {
+  } else if (type === "vertical") {
     moveNPCVertical(enemy);
-  } else if (type === "hunter"){
+  } else if (type === "hunter") {
     if(counter%2 === 0){
-      moveNpcHunter(enemy, hunted);
+      moveNpcHunter(enemy, target);
     }
   }
 }
 
-function moveNpcHunter(enemy, hunted){
-  var xDistance = hunted.xCoordinate - enemy.xCoordinate;
-  var yDistance = hunted.yCoordinate - enemy.yCoordinate;
-  if (Math.abs(xDistance) > Math.abs(yDistance)){
+function moveNpcHunter(enemy, target) {
+  var xDistance = target.xCoordinate - enemy.xCoordinate;
+  var yDistance = target.yCoordinate - enemy.yCoordinate;
+  if (Math.abs(xDistance) > Math.abs(yDistance)) {
     if (xDistance > 0) {
-      if (notABarrier(enemy, "right") && notAWall(enemy, "right")){
+      if (notABarrier(enemy, "right") && notAWall(enemy, "right")) {
         enemy.xCoordinate += 1;
       } else if (yDistance >= 0 && notABarrier(enemy, "down") && notAWall(enemy, "down")) {
         enemy.yCoordinate += 1;
@@ -62,7 +64,7 @@ function moveNpcHunter(enemy, hunted){
     }
   } else {
     if (xDistance > 0) {
-      if (notABarrier(enemy, "right") && notAWall(enemy, "right")){
+      if (notABarrier(enemy, "right") && notAWall(enemy, "right")) {
         enemy.xCoordinate += 1;
       } else if (yDistance >= 0 && notABarrier(enemy, "down") && notAWall(enemy, "down")) {
         enemy.yCoordinate += 1;
@@ -82,42 +84,41 @@ function moveNpcHunter(enemy, hunted){
 }
 
 function moveNPCHorizontal(enemy) {
-  if (enemy.direction === "right") {
+  if (enemy.enemyDirection === "right") {
     if (enemy.xCoordinate < 5 && notAWall(enemy, "right") && notABarrier(enemy, "right")) {
       enemy.xCoordinate += 1;
     } else {
       enemy.xCoordinate -= 1;
-      enemy.direction = "left";
+      enemy.enemyDirection = "left";
     }
   } else {
     if (enemy.xCoordinate > 0 && notAWall(enemy, "left") && notABarrier(enemy, "left")) {
       enemy.xCoordinate -= 1;
     } else {
       enemy.xCoordinate += 1;
-      enemy.direction = "right";
+      enemy.enemyDirection = "right";
     }
   }
 }
 
 function moveNPCVertical(enemy) {
-  if (enemy.direction === "down") {
+  if (enemy.enemyDirection === "down") {
     if (enemy.yCoordinate < 5 && notAWall(enemy, "down") && notABarrier(enemy, "down")) {
       enemy.yCoordinate += 1;
     } else {
       enemy.yCoordinate -= 1;
-      enemy.direction = "up";
+      enemy.enemyDirection = "up";
     }
   } else {
     if (enemy.yCoordinate > 0 && notAWall(enemy, "up") && notABarrier(enemy, "up")) {
       enemy.yCoordinate -= 1;
     } else {
       enemy.yCoordinate += 1;
-      enemy.direction = "down";
+      enemy.enemyDirection = "down";
     }
   }
 }
 
-// BLOCK BARRIER CHECK
 function notABarrier(object, direction) {
   if (direction === "left") {
     if ($(".y" + object.yCoordinate + " .x" + (object.xCoordinate - 1)).attr('class').includes("barrier")) {
@@ -142,7 +143,6 @@ function notABarrier(object, direction) {
   }
 }
 
-// BORDER WALL CHECK
 function notAWall(object, direction) {
   if (direction === "left") {
     if ($(".y" + object.yCoordinate + " .x" + object.xCoordinate).attr('class').includes("wall-left")) {
@@ -171,131 +171,104 @@ function notAWall(object, direction) {
   }
 }
 
-function turnCountDown(turnTimer) {
-  turnTimer --;
-  $(".meter-bar").last().remove();
-  return turnTimer;
-}
-
-// UI Logic
-function condition(player, toilet, enemies, turnTimer) {
-  var returnValue = "go";
+// USER INTERFACE LOGIC
+function triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit) {
+  var interrupt = false;
   if (player.xCoordinate === toilet.xCoordinate && player.yCoordinate === toilet.yCoordinate) {
-    $("#output").text("You win, now you get to poop.");
-    $(".navigation").hide();
-    $(".refresh").show();
-    returnValue = "stop";
-  } else if (turnTimer === 0){
-    $("#output").text("You ran out of time and had an accident.");
-    $(".navigation").hide();
-    $(".refresh").show();
-    returnValue = "stop";
+    $("#game-over h4").html("Whew, you win! Don't forget to flush.");
+    $("#navigation").hide();
+    $("#game-over").show();
+    interrupt = true;
+  } else if (turnCounter === turnLimit + 1) {
+    $("#game-over h4").html("You ran out of time and had an accident.");
+    $("#navigation").hide();
+    $("#game-over").show();
+    interrupt = true;
   }
-  enemies.forEach(function(enemy){
+  enemies.forEach(function(enemy) {
     if (player.xCoordinate === enemy.xCoordinate && player.yCoordinate === enemy.yCoordinate) {
-      $("#output").text("You lose!");
-      $(".navigation").hide();
-      $(".refresh").show();
-      returnValue = "stop";
+      $("#game-over h4").html("You lose!");
+      $("#navigation").hide();
+      $("#game-over").show();
+      interrupt = true;
     }
   });
-  return returnValue;
+  return interrupt;
 }
 
-function redraw(objectArray){
+function positionGameObjects(array) {
   $("td").text("");
-  objectArray.forEach(function(element){
-    $(".y" + element.yCoordinate + " .x" + element.xCoordinate).html("<img src=\"img/" + element.symbol + "\">");
+  array.forEach(function(element) {
+    $(".y" + element.yCoordinate + " .x" + element.xCoordinate).html("<img src=\"img/" + element.avatar + "\">");
   });
 }
 
-function enduranceMeter(counter) {
-  for (var i = 0; i < counter; i ++) {
-    $("#meter").append("<div class=\"meter-bar\"></div>")
+function meter(turnCounter, turnLimit) {
+  var percentileWidth = turnCounter / turnLimit * 100;
+  if (percentileWidth >= 40 && percentileWidth < 70) {
+    $("#meter").addClass("warning");
+  } else if (percentileWidth >= 70) {
+    $("#meter").addClass("danger");
   }
+  $("#meter").width(percentileWidth + "%");
 }
 
-$(document).ready(function(){
-  var turnTimer = 20;
-  var objectArray = [];
-  var enemies= [];
-  var enemy1 = new GameObject("poop.png", (Math.ceil(Math.random() * 4)), (Math.ceil(Math.random() * 4)));
-  var enemy2 = new GameObject("hunter.gif", (Math.ceil(Math.random() * 4)), (Math.ceil(Math.random() * 4)));
+$(document).ready(function() {
+  var turnCounter = 0;
+  var turnLimit = 20;
+  var gameObjects = [];
+  var enemies = [];
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 5, 5);
-  var enemyType1 = "vertical";
-  var enemyType2 = "hunter";
-  objectArray.push(toilet);
-  objectArray.push(player);
-  objectArray.push(enemy1);
+  var enemy1 = new GameObject("poop.png", 1, 4, "vertical");
+  var enemy2 = new GameObject("hunter.gif", 5, 0, "hunter", player);
+  gameObjects.push(toilet);
+  gameObjects.push(player);
+  gameObjects.push(enemy1);
+  gameObjects.push(enemy2);
   enemies.push(enemy1);
-  objectArray.push(enemy2);
   enemies.push(enemy2);
 
-  enduranceMeter(turnTimer);
+  positionGameObjects(gameObjects);
 
-  redraw(objectArray);
-  $("button#move-left").click(function(event) {
-    event.preventDefault();
+  function progressTurn() {
+    positionGameObjects(gameObjects);
+    if (triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit) === false) {
+      movePattern(enemy1, enemy1.enemyType, enemy1.enemyTarget, turnCounter);
+      movePattern(enemy2, enemy2.enemyType, enemy2.enemyTarget, turnCounter);
+      positionGameObjects(gameObjects);
+    }
+    turnCounter ++;
+    meter(turnCounter, turnLimit);
+    triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit);
+  }
+
+  $("button#move-left").click(function() {
     if (player.xCoordinate > 0 && notAWall(player, "left") && notABarrier(player, "left")) {
       player.xCoordinate = player.xCoordinate - 1;
     }
-    redraw(objectArray);
-    var firstCheck = condition(player, toilet, enemies, turnTimer);
-    if (firstCheck === "go") {
-      movePattern(enemy1, enemyType1, toilet, turnTimer);
-      movePattern(enemy2, enemyType2, player, turnTimer);
-      redraw(objectArray);
-    }
-    turnTimer = turnCountDown(turnTimer);
-    condition(player, toilet, enemies, turnTimer);
+    progressTurn();
   });
-  $("button#move-right").click(function(event) {
-    event.preventDefault();
+
+  $("button#move-right").click(function() {
     if (player.xCoordinate < 5 && notAWall(player, "right") && notABarrier(player, "right")) {
       player.xCoordinate = player.xCoordinate + 1;
     }
-    redraw(objectArray);
-    var firstCheck = condition(player, toilet, enemies, turnTimer);
-    if (firstCheck === "go") {
-      movePattern(enemy1, enemyType1, toilet, turnTimer);
-      movePattern(enemy2, enemyType2, player, turnTimer);
-      redraw(objectArray);
-    }
-    turnTimer = turnCountDown(turnTimer);
-    condition(player, toilet, enemies, turnTimer);
-    console.log(player);
-    console.log(objectArray[1]);
+    progressTurn();
   });
-  $("button#move-up").click(function(event) {
-    event.preventDefault();
+
+  $("button#move-up").click(function() {
     if (player.yCoordinate > 0 && notAWall(player, "up") && notABarrier(player, "up")) {
       player.yCoordinate = player.yCoordinate - 1;
     }
-    redraw(objectArray);
-    var firstCheck = condition(player, toilet, enemies, turnTimer);
-    if (firstCheck === "go") {
-      movePattern(enemy1, enemyType1, toilet, turnTimer);
-      movePattern(enemy2, enemyType2, player, turnTimer);
-      redraw(objectArray);
-    }
-    turnTimer = turnCountDown(turnTimer);
-    condition(player, toilet, enemies, turnTimer);
+    progressTurn();
   });
-  $("button#move-down").click(function(event) {
-    event.preventDefault();
+
+  $("button#move-down").click(function() {
     if (player.yCoordinate < 5 && notAWall(player, "down") && notABarrier(player, "down")) {
       player.yCoordinate = player.yCoordinate + 1;
     }
-    redraw(objectArray);
-    var firstCheck = condition(player, toilet, enemies, turnTimer);
-    if (firstCheck === "go") {
-      movePattern(enemy1, enemyType1, toilet, turnTimer);
-      movePattern(enemy2, enemyType2, player, turnTimer);
-      redraw(objectArray);
-    }
-    turnTimer = turnCountDown(turnTimer);
-    condition(player, toilet, enemies, turnTimer);
+    progressTurn();
   });
 
   $("#restart").click(function() {
