@@ -10,52 +10,124 @@
   <body>
     <table id="gameboard" class="text-center">
       <tr class="y0">
-        <td class="x0"></td>
-        <td class="x1"></td>
-        <td class="x2"></td>
-        <td class="x3"></td>
-        <td class="x4"></td>
-        <td class="x5"></td>
+        <td class="x0 wall-left wall-up"></td>
+        <td class="x1 wall-up"></td>
+        <td class="x2 wall-up"></td>
+        <td class="x3 wall-up"></td>
+        <td class="x4 wall-right wall-up"></td>
+        <td class="x5 wall-left wall-up"></td>
+        <td class="x6 wall-up"></td>
+        <td class="x7 wall-right wall-up"></td>
+        <td class="x8 wall-left wall-up"></td>
+        <td class="x9 wall-up wall-right"></td>
       </tr>
       <tr class="y1">
-        <td class="x0"></td>
-        <td class="x1"></td>
-        <td class="x2"></td>
-        <td class="x3"></td>
-        <td class="x4"></td>
+        <td class="x0 wall-left wall-down"></td>
+        <td class="x1 wall-down"></td>
+        <td class="x2 wall-down"></td>
+        <td class="x3 wall-down"></td>
+        <td class="x4 wall-down"></td>
         <td class="x5"></td>
+        <td class="x6 barrier"></td>
+        <td class="x7"></td>
+        <td class="x8"></td>
+        <td class="x9 wall-right"></td>
       </tr>
       <tr class="y2">
-        <td class="x0"></td>
-        <td class="x1"></td>
-        <td class="x2 barrier"></td>
-        <td class="x3 barrier"></td>
-        <td class="x4"></td>
-        <td class="x5"></td>
+        <td class="x0 wall-left wall-up"></td>
+        <td class="x1 wall-up"></td>
+        <td class="x2 wall-up"></td>
+        <td class="x3 wall-up"></td>
+        <td class="x4 wall-up wall-right"></td>
+        <td class="x5 wall-left wall-down"></td>
+        <td class="x6"></td>
+        <td class="x7 wall-down wall-right"></td>
+        <td class="x8 wall-left"></td>
+        <td class="x9 wall-right"></td>
       </tr>
       <tr class="y3">
-        <td class="x0"></td>
+        <td class="x0 wall-left"></td>
         <td class="x1"></td>
         <td class="x2 barrier"></td>
-        <td class="x3 barrier"></td>
+        <td class="x3"></td>
         <td class="x4"></td>
-        <td class="x5"></td>
+        <td class="x5 wall-up"></td>
+        <td class="x6"></td>
+        <td class="x7 wall-up wall-right"></td>
+        <td class="x8 wall-left"></td>
+        <td class="x9 wall-right"></td>
       </tr>
       <tr class="y4">
-        <td class="x0"></td>
+        <td class="x0 wall-left"></td>
         <td class="x1"></td>
-        <td class="x2"></td>
+        <td class="x2 barrier"></td>
         <td class="x3"></td>
-        <td class="x4"></td>
-        <td class="x5"></td>
+        <td class="x4 wall-right"></td>
+        <td class="x5 wall-left"></td>
+        <td class="x6 barrier"></td>
+        <td class="x7 wall-right"></td>
+        <td class="x8 wall-left"></td>
+        <td class="x9 wall-right"></td>
       </tr>
       <tr class="y5">
-        <td class="x0"></td>
+        <td class="x0 wall-left wall-down"></td>
         <td class="x1"></td>
+        <td class="x2 wall-down wall-up"></td>
+        <td class="x3 wall-down"></td>
+        <td class="x4 wall-down wall-right"></td>
+        <td class="x5 wall-down wall-left"></td>
+        <td class="x6 wall-down"></td>
+        <td class="x7 wall-down"></td>
+        <td class="x8 wall-down"></td>
+        <td class="x9 wall-down wall-right"></td>
+      </tr>
+      <tr class="y6">
+        <td class="x0 wall-left wall-up"></td>
+        <td class="x1"></td>
+        <td class="x2 wall-up wall-right"></td>
+        <td class="x3 wall-up wall-left"></td>
+        <td class="x4 wall-up wall-right"></td>
+        <td class="x5 wall-up wall-left"></td>
+        <td class="x6 wall-up wall-right"></td>
+        <td class="x7 wall-up wall-left"></td>
+        <td class="x8 wall-up"></td>
+        <td class="x9 wall-up wall-right"></td>
+      </tr>
+      <tr class="y7">
+        <td class="x0 wall-left"></td>
+        <td class="x1 barrier"></td>
         <td class="x2"></td>
         <td class="x3"></td>
+        <td class="x4 wall-right"></td>
+        <td class="x5 wall-left"></td>
+        <td class="x6"></td>
+        <td class="x7"></td>
+        <td class="x8 barrier"></td>
+        <td class="x9 wall-right"></td>
+      </tr>
+      <tr class="y8">
+        <td class="x0 wall-left wall-down"></td>
+        <td class="x1"></td>
+        <td class="x2 wall-down wall-right"></td>
+        <td class="x3 wall-left"></td>
         <td class="x4"></td>
         <td class="x5"></td>
+        <td class="x6 wall-right"></td>
+        <td class="x7 wall-left wall-down"></td>
+        <td class="x8"></td>
+        <td class="x9 wall-right wall-down"></td>
+      </tr>
+      <tr class="y9">
+        <td class="x0 wall-left wall-up wall-down"></td>
+        <td class="x1 wall-down"></td>
+        <td class="x2 wall-up wall-down"></td>
+        <td class="x3 wall-down"></td>
+        <td class="x4 wall-down"></td>
+        <td class="x5 wall-down"></td>
+        <td class="x6 wall-right wall-down"></td>
+        <td class="x7 wall-left wall-down wall-up"></td>
+        <td class="x8 wall-down"></td>
+        <td class="x9 wall-right wall-down wall-up"></td>
       </tr>
     </table>
     <div id="navigation" class="text-center">
