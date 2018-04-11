@@ -275,32 +275,46 @@ $(document).ready(function() {
     triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit);
   }
 
-  $("button#move-left").click(function() {
-    if (player.xCoordinate > 0 && notAWall(player, "left") && notABarrier(player, "left")) {
-      player.xCoordinate = player.xCoordinate - 1;
+  function playerMove(direction) {
+    if (direction === "left") {
+      if (player.xCoordinate > 0 && notAWall(player, "left") && notABarrier(player, "left")) {
+        player.xCoordinate = player.xCoordinate - 1;
+      }
+    } else if (direction === "right") {
+      if (player.xCoordinate < 5 && notAWall(player, "right") && notABarrier(player, "right")) {
+        player.xCoordinate = player.xCoordinate + 1;
+      }
+    } else if (direction === "up") {
+      if (player.yCoordinate > 0 && notAWall(player, "up") && notABarrier(player, "up")) {
+        player.yCoordinate = player.yCoordinate - 1;
+      }
+    } else if (direction === "down") {
+      if (player.yCoordinate < 5 && notAWall(player, "down") && notABarrier(player, "down")) {
+        player.yCoordinate = player.yCoordinate + 1;
+      }
     }
     progressTurn();
+  }
+
+  // Mouse Navigation
+  $("#navigation button").click(function() {
+    var playerDirection = $(this).attr("id");
+    playerMove(playerDirection);
   });
 
-  $("button#move-right").click(function() {
-    if (player.xCoordinate < 5 && notAWall(player, "right") && notABarrier(player, "right")) {
-      player.xCoordinate = player.xCoordinate + 1;
+  // Arrow Key Navigation
+  $(document).keydown(function(e){
+    if (triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit)) {
+      return;
+    } else if (e.keyCode === 37) {
+       playerMove("left")
+    } else if (e.keyCode === 39) {
+       playerMove("right")
+    } else if (e.keyCode === 38) {
+       playerMove("up")
+    } else if (e.keyCode === 40) {
+       playerMove("down")
     }
-    progressTurn();
-  });
-
-  $("button#move-up").click(function() {
-    if (player.yCoordinate > 0 && notAWall(player, "up") && notABarrier(player, "up")) {
-      player.yCoordinate = player.yCoordinate - 1;
-    }
-    progressTurn();
-  });
-
-  $("button#move-down").click(function() {
-    if (player.yCoordinate < 5 && notAWall(player, "down") && notABarrier(player, "down")) {
-      player.yCoordinate = player.yCoordinate + 1;
-    }
-    progressTurn();
   });
 
   $("#restart").click(function() {
