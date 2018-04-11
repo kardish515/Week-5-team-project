@@ -13,9 +13,11 @@ function coinFlip() {
 
 function movePattern (enemy, type, target, counter) {
   if (type === "horizontal") {
-    moveNPCHorizontal(enemy);
+    moveNpcHorizontal(enemy);
   } else if (type === "vertical") {
-    moveNPCVertical(enemy);
+    moveNpcVertical(enemy);
+  } else if (type === "patrol") {
+    moveNpcPatrol(enemy);
   } else if (type === "hunter") {
     if(counter%2 === 0){
       moveNpcHunter(enemy, target);
@@ -83,7 +85,37 @@ function moveNpcHunter(enemy, target) {
   }
 }
 
-function moveNPCHorizontal(enemy) {
+function moveNpcPatrol(enemy) {
+  if (enemy.enemyDirection === "down") {
+    if (enemy.yCoordinate < 5 && notABarrier(enemy, "down") && notAWall(enemy, "down")) {
+      enemy.yCoordinate +=1;
+    } else {
+      enemy.enemyDirection = "left";
+    }
+  } else if (enemy.enemyDirection === "left") {
+    if (enemy.xCoordinate > 0 && notABarrier(enemy, "left") && notAWall(enemy, "left")) {
+      enemy.xCoordinate -=1;
+    } else {
+      enemy.enemyDirection = "up";
+    }
+  } else if (enemy.enemyDirection === "up") {
+    if (enemy.yCoordinate > 0 && notABarrier(enemy, "up") && notAWall(enemy, "up")) {
+      enemy.yCoordinate -=1;
+    } else {
+      enemy.enemyDirection = "right";
+    }
+  } else if (enemy.enemyDirection === "right") {
+    if (enemy.xCoordinate < 5 && notABarrier(enemy, "right") && notAWall(enemy, "right")) {
+      enemy.xCoordinate +=1;
+    } else {
+      enemy.enemyDirection = "down";
+    }
+  } else {
+    enemy.enemyDirection = "left";
+  }
+}
+
+function moveNpcHorizontal(enemy) {
   if (enemy.enemyDirection === "right") {
     if (enemy.xCoordinate < 5 && notAWall(enemy, "right") && notABarrier(enemy, "right")) {
       enemy.xCoordinate += 1;
@@ -101,7 +133,7 @@ function moveNPCHorizontal(enemy) {
   }
 }
 
-function moveNPCVertical(enemy) {
+function moveNpcVertical(enemy) {
   if (enemy.enemyDirection === "down") {
     if (enemy.yCoordinate < 5 && notAWall(enemy, "down") && notABarrier(enemy, "down")) {
       enemy.yCoordinate += 1;
@@ -220,7 +252,7 @@ $(document).ready(function() {
   var enemies = [];
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 5, 5);
-  var enemy1 = new GameObject("poop.png", 1, 4, "vertical");
+  var enemy1 = new GameObject("poop.png", 1, 4, "patrol");
   var enemy2 = new GameObject("hunter.gif", 5, 0, "hunter", player);
   gameObjects.push(toilet);
   gameObjects.push(player);
