@@ -348,6 +348,8 @@ $(document).ready(function() {
     if(diaperCheck(player, diaper)){
       turnCounter = diaperIncrease(player, diaper, turnCounter, turnLimit);
       gameObjects.pop();
+      diaper.xCoordinate = "";
+      diaper.yCoordinate = "";
       positionGameObjects(gameObjects);
     }
   });
