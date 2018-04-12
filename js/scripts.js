@@ -295,7 +295,7 @@ $(document).ready(function() {
   var enemy3 = new GameObject("poop.png", Math.floor(Math.random() * 6), 1, "horizontal");
   var enemy4 = new GameObject("poop.png", 4, 8, "horizontal");
   var enemy5 = new GameObject("poop.png", 9, 6, "patrol", "", "down" );
-  var enemy6 = new GameObject("poop.png", 8, 3, "vertical");
+  var enemy6 = new GameObject("poop.png", 8, Math.floor(Math.random() * 6), "vertical");
   var enemy7 = new GameObject("poop.png", 7, 4, "patrol");
   gameObjects.push(toilet);
   gameObjects.push(player);
@@ -385,13 +385,13 @@ $(document).ready(function() {
   $(document).keydown(function(e){
     if (triggerInterrupt(player, toilet, enemies, turnCounter, turnLimit, check)) {
       return;
-    } else if (e.keyCode === 37) {
+    } else if (e.keyCode === 65) {
        playerMove("left")
-    } else if (e.keyCode === 39) {
+    } else if (e.keyCode === 68) {
        playerMove("right")
-    } else if (e.keyCode === 38) {
+    } else if (e.keyCode === 87) {
        playerMove("up")
-    } else if (e.keyCode === 40) {
+    } else if (e.keyCode === 83) {
        playerMove("down")
     }
     if(diaperCheck(player, diaper)){
