@@ -288,7 +288,7 @@ $(document).ready(function() {
   var enemies = [];
   var player = new GameObject("player.png", 0, 0);
   var toilet = new GameObject("toilet.png", 9, 9);
-  var diaper = new GameObject("diaper.jpg", 0, 9);
+  var diaper = new GameObject("diaper.png", 0, 9);
   var pants = new GameObject("pants.gif", 9, 5);
   var enemy1 = new GameObject("poop.png", 1, 2, "vertical");
   var enemy2 = new GameObject("hunter.gif", 4, 4, "hunter", player);
@@ -298,7 +298,6 @@ $(document).ready(function() {
   var enemy6 = new GameObject("poop.png", 8, Math.floor(Math.random() * 6), "vertical");
   var enemy7 = new GameObject("poop.png", 7, 4, "patrol");
   gameObjects.push(toilet);
-  gameObjects.push(player);
   gameObjects.push(enemy1);
   gameObjects.push(enemy2);
   gameObjects.push(enemy3);
@@ -306,6 +305,7 @@ $(document).ready(function() {
   gameObjects.push(enemy5);
   gameObjects.push(enemy6);
   gameObjects.push(enemy7);
+  gameObjects.push(player);
   gameObjects.push(diaper);
   gameObjects.push(pants);
   enemies.push(enemy1);
