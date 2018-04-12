@@ -26,6 +26,19 @@ td {
   width: 660px;
 }
 
+#pants-status h3 {
+  float: left;
+  font-weight: bold;
+  margin: 6px 10px;
+}
+
+#pants-status {
+  border: 1px solid #000;
+  margin: 0 auto 15px;
+  overflow: auto;
+  width: 660px;
+}
+
 #meter {
   background-color: #5cf9a2;
   height: 38px;
@@ -37,6 +50,20 @@ td {
 }
 
 #meter.danger {
+  background-color: #ff5151;
+}
+
+#pants-meter {
+  background-color: #5cf9a2;
+  height: 38px;
+  width: 0%;
+}
+
+#pants-meter.warning {
+  background-color: #f6f95c;
+}
+
+#pants-meter.danger {
   background-color: #ff5151;
 }
 

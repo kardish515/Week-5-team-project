@@ -275,7 +275,6 @@ function pantsMeter(pantsPower) {
     $("#pants-meter").addClass("danger");
   }
   $("#pants-meter").width(percentileWidth + "%");
-  console.log(pantsPower);
   return pantsPower;
 }
 
