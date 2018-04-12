@@ -327,7 +327,6 @@ $(document).ready(function() {
     playerMove(playerDirection);
     if(diaperCheck(player, diaper)){
       turnCounter = diaperIncrease(player, diaper, turnCounter, turnLimit);
-      gameObjects.pop();
       diaper.xCoordinate = "";
       diaper.yCoordinate = "";
       positionGameObjects(gameObjects);
